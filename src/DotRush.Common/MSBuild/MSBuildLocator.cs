@@ -50,6 +50,34 @@ public static partial class MSBuildLocator {
         return Directory.GetParent(sdkLocation)?.FullName ?? string.Empty;
     }
     public static string GetLatestSdkLocation() {
+        // Parse `dotnet --list-sdks` output which reports the canonical path for each SDK.
+        // Each line has the format: <version> [<directory>]
+        // This avoids a mismatch when multiple .NET installations exist (e.g. x64 at
+        // /usr/local/share/dotnet and ARM/Homebrew at /opt/homebrew) and GetRootLocation()
+        // returns a different root than the dotnet binary that is active in PATH.
+        var listSdksResult = new ProcessRunner("dotnet" + RuntimeInfo.ExecExtension, new ProcessArgumentBuilder()
+            .Append("--list-sdks"))
+            .WaitForExit();
+
+        if (listSdksResult.Success) {
+            var sdkEntries = listSdksResult.StandardOutput
+                .Select(line => DotNetSdkPathRegex().Match(line))
+                .Where(m => m.Success)
+                .Select(m => {
+                    var dir = m.Groups[1].Value;
+                    var versionLine = m.Value;
+                    var version = versionLine.Substring(0, versionLine.IndexOf('[', StringComparison.Ordinal)).Trim();
+                    return Path.Combine(dir, version);
+                })
+                .Where(Directory.Exists)
+                .OrderByDescending(p => p)
+                .FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(sdkEntries))
+                return sdkEntries;
+        }
+
+        // Fallback: compose path from root location (may not work with mixed installs)
         var sdkPath = Path.Combine(MSBuildLocator.GetSdksLocation(), MSBuildLocator.GetLatestSdkVersion());
         if (!Directory.Exists(sdkPath))
             throw new DirectoryNotFoundException("Could not find actual dotnet sdk directory");
