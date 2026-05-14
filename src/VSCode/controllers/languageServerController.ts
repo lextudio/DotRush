@@ -33,9 +33,6 @@ export class LanguageServerController {
             }
         };
 
-        if (await LanguageServerController.shouldQuickPickTargets())
-            await LanguageServerController.showQuickPickTargets();
-
         LanguageServerController.start();
 
         context.subscriptions.push(LanguageServerController.client);
@@ -98,17 +95,5 @@ export class LanguageServerController {
 
         await Extensions.putSetting(res.configIdRoslynProjectOrSolutionFiles, result, vscode.ConfigurationTarget.Workspace);
         LanguageServerController.reload();
-    }
-    private static async shouldQuickPickTargets(): Promise<boolean> {
-        const projectOrSolutionFiles = Extensions.getSetting<string[]>(res.configIdRoslynProjectOrSolutionFiles);
-        if (projectOrSolutionFiles !== undefined && projectOrSolutionFiles.length > 0)
-            return false;
-
-        const solutions = await Extensions.getSolutionFiles();
-        const projects = await Extensions.getProjectFiles(true);
-        if (solutions.length === 1 || projects.length === 1)
-            return false;
-
-        return solutions.length > 1 || projects.length > 1;
     }
 }

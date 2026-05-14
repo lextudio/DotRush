@@ -35,8 +35,23 @@ export const commandIdActiveTargetBinaryPath = "dotrush.activeTargetBinaryPath";
 export const commandIdSetStartupProject = "dotrush.setStartupProject";
 export const commandIdBuildWorkspace = "dotrush.buildWorkspace";
 export const commandIdStatusBarEnabled = "dotrush.statusBarEnabled";
+export const commandIdConfigurationManagerRefresh = "dotrush.configurationManager.refresh";
+export const commandIdConfigurationManagerSetConfiguration = "dotrush.configurationManager.setProjectConfiguration";
+export const commandIdConfigurationManagerSetFramework = "dotrush.configurationManager.setProjectFramework";
+export const commandIdConfigurationManagerToggleBuild = "dotrush.configurationManager.toggleProjectBuild";
+export const commandIdConfigurationManagerReset = "dotrush.configurationManager.resetProject";
+export const configurationManagerViewId = "dotrush.configurationManager";
+
+export const commandIdSolutionExplorerRefresh = "dotrush.solutionExplorer.refresh";
+export const commandIdSolutionExplorerOpenSolution = "dotrush.solutionExplorer.openSolution";
+export const commandIdSolutionExplorerSetWorkspaceTarget = "dotrush.solutionExplorer.setWorkspaceTarget";
+export const commandIdSolutionExplorerOpenItem = "dotrush.solutionExplorer.openItem";
+export const commandIdSolutionExplorerBuildProject = "dotrush.solutionExplorer.buildProject";
+export const commandIdSolutionExplorerRebuildProject = "dotrush.solutionExplorer.rebuildProject";
+export const commandIdSolutionExplorerCleanProject = "dotrush.solutionExplorer.cleanProject";
 
 export const taskDefinitionId = "dotrush.task";
+export const solutionExplorerViewId = "dotrush.solutionExplorer";
 export const extendedViewIdModules = "dotrush.modulesView";
 export const testExplorerViewId = "dotrush.testExplorer";
 export const testExplorerViewTitle = "DotRush Test Explorer";

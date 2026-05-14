@@ -50,6 +50,7 @@ public class Program {
         // Framework handlers
               .AddHandler(new SolutionDiagnosticsHandler(workspaceService, codeAnalysisService))
               .AddHandler(new ReloadWorkspaceHandler(workspaceService, navigationService, codeAnalysisService))
+              .AddHandler(new SolutionExplorerHandler(workspaceService))
               .AddHandler(new TestExplorerHandler(testExplorerService, workspaceService));
 
         languageServer.OnInitialize(OnInitializeAsync);

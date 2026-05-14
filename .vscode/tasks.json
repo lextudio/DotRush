@@ -4,11 +4,10 @@
         {
             "label": "tsc: watch",
             "type": "shell",
-            "command": "tsc",
+            "command": "npm",
             "args": [
-                "-w",
-                "-p",
-                "${workspaceFolder}/src/VSCode"
+                "run",
+                "watch"
             ],
             "isBackground": true,
             "problemMatcher": [

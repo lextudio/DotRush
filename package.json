@@ -129,6 +129,38 @@
         {
           "command": "dotrush.clean",
           "when": "false"
+        },
+        {
+          "command": "dotrush.solutionExplorer.setWorkspaceTarget",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.solutionExplorer.buildProject",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.solutionExplorer.rebuildProject",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.solutionExplorer.cleanProject",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.configurationManager.setProjectConfiguration",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.configurationManager.setProjectFramework",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.configurationManager.toggleProjectBuild",
+          "when": "false"
+        },
+        {
+          "command": "dotrush.configurationManager.resetProject",
+          "when": "false"
         }
       ],
       "debug/toolBar": [
@@ -142,15 +174,98 @@
           "group": "navigation4@2",
           "when": "debugType == coreclr"
         }
+      ],
+      "view/title": [
+        {
+          "command": "dotrush.solutionExplorer.openSolution",
+          "when": "view == dotrush.solutionExplorer",
+          "group": "navigation@0"
+        },
+        {
+          "command": "dotrush.solutionExplorer.refresh",
+          "when": "view == dotrush.solutionExplorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dotrush.configurationManager.refresh",
+          "when": "view == dotrush.configurationManager",
+          "group": "navigation@0"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "dotrush.solutionExplorer.buildProject",
+          "when": "view == dotrush.solutionExplorer && viewItem =~ /dotrushSolutionExplorerProject(Active)?$/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "dotrush.solutionExplorer.rebuildProject",
+          "when": "view == dotrush.solutionExplorer && viewItem =~ /dotrushSolutionExplorerProject(Active)?$/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "dotrush.solutionExplorer.cleanProject",
+          "when": "view == dotrush.solutionExplorer && viewItem =~ /dotrushSolutionExplorerProject(Active)?$/",
+          "group": "navigation@4"
+        },
+        {
+          "command": "dotrush.solutionExplorer.setWorkspaceTarget",
+          "when": "view == dotrush.solutionExplorer && viewItem =~ /dotrushSolutionExplorer(Solution|Project)(Active)?$/",
+          "group": "inline"
+        },
+        {
+          "command": "dotrush.solutionExplorer.setWorkspaceTarget",
+          "when": "view == dotrush.solutionExplorer && viewItem =~ /dotrushSolutionExplorer(Solution|Project)(Active)?$/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dotrush.configurationManager.setProjectConfiguration",
+          "when": "view == dotrush.configurationManager && viewItem =~ /dotrushConfigurationManagerProject/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dotrush.configurationManager.setProjectFramework",
+          "when": "view == dotrush.configurationManager && viewItem =~ /dotrushConfigurationManagerProject/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "dotrush.configurationManager.toggleProjectBuild",
+          "when": "view == dotrush.configurationManager && viewItem =~ /dotrushConfigurationManagerProject/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "dotrush.configurationManager.resetProject",
+          "when": "view == dotrush.configurationManager && viewItem =~ /dotrushConfigurationManagerProject/",
+          "group": "navigation@4"
+        }
       ]
     },
     "views": {
+      "dotrush": [
+        {
+          "id": "dotrush.solutionExplorer",
+          "name": "Solution Explorer"
+        },
+        {
+          "id": "dotrush.configurationManager",
+          "name": "Configuration Manager"
+        }
+      ],
       "debug": [
         {
           "id": "dotrush.modulesView",
           "name": "Modules",
           "when": "debugType == coreclr || debugType == unity",
           "icon": "$(symbol-namespace)"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dotrush",
+          "title": "DotRush",
+          "icon": "assets/csharp.svg"
         }
       ]
     },
@@ -190,6 +305,72 @@
         "command": "dotrush.createNewProject",
         "category": "%extension.displayName%",
         "title": "%command.title.createNewProject%"
+      },
+      {
+        "command": "dotrush.solutionExplorer.openSolution",
+        "category": "%extension.displayName%",
+        "icon": "$(folder-opened)",
+        "title": "%command.title.solutionExplorer.openSolution%"
+      },
+      {
+        "command": "dotrush.solutionExplorer.refresh",
+        "category": "%extension.displayName%",
+        "icon": "$(refresh)",
+        "title": "%command.title.solutionExplorer.refresh%"
+      },
+      {
+        "command": "dotrush.solutionExplorer.setWorkspaceTarget",
+        "category": "%extension.displayName%",
+        "icon": "$(check)",
+        "title": "%command.title.solutionExplorer.setWorkspaceTarget%"
+      },
+      {
+        "command": "dotrush.solutionExplorer.buildProject",
+        "category": "%extension.displayName%",
+        "icon": "$(gear)",
+        "title": "%command.title.solutionExplorer.buildProject%"
+      },
+      {
+        "command": "dotrush.solutionExplorer.rebuildProject",
+        "category": "%extension.displayName%",
+        "icon": "$(sync)",
+        "title": "%command.title.solutionExplorer.rebuildProject%"
+      },
+      {
+        "command": "dotrush.solutionExplorer.cleanProject",
+        "category": "%extension.displayName%",
+        "icon": "$(clear-all)",
+        "title": "%command.title.solutionExplorer.cleanProject%"
+      },
+      {
+        "command": "dotrush.configurationManager.refresh",
+        "category": "%extension.displayName%",
+        "icon": "$(refresh)",
+        "title": "%command.title.configurationManager.refresh%"
+      },
+      {
+        "command": "dotrush.configurationManager.setProjectConfiguration",
+        "category": "%extension.displayName%",
+        "icon": "$(settings-gear)",
+        "title": "%command.title.configurationManager.setProjectConfiguration%"
+      },
+      {
+        "command": "dotrush.configurationManager.setProjectFramework",
+        "category": "%extension.displayName%",
+        "icon": "$(layers)",
+        "title": "%command.title.configurationManager.setProjectFramework%"
+      },
+      {
+        "command": "dotrush.configurationManager.toggleProjectBuild",
+        "category": "%extension.displayName%",
+        "icon": "$(eye)",
+        "title": "%command.title.configurationManager.toggleProjectBuild%"
+      },
+      {
+        "command": "dotrush.configurationManager.resetProject",
+        "category": "%extension.displayName%",
+        "icon": "$(discard)",
+        "title": "%command.title.configurationManager.resetProject%"
       },
       {
         "command": "dotrush.build",

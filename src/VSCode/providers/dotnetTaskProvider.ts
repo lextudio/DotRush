@@ -1,4 +1,5 @@
 import { StatusBarController } from '../controllers/statusbarController';
+import { ConfigurationManager } from '../features/configurationManager';
 import { ProcessArgumentBuilder } from '../interop/processArgumentBuilder';
 import { Extensions } from '../extensions';
 import * as res from '../resources/constants';
@@ -6,6 +7,7 @@ import * as vscode from 'vscode';
 
 enum DotNetTarget {
     Build = 'build',
+    Rebuild = 'build',
     Clean = 'clean',
     Restore = 'restore',
 }
@@ -36,13 +38,25 @@ export class DotNetTaskProvider implements vscode.TaskProvider {
     }
 
     public static getBuildTask(projectFile: string): vscode.Task {
-        return DotNetTaskProvider.getTask({ type: res.taskDefinitionId, target: DotNetTarget.Build, project: projectFile }, StatusBarController.activeConfiguration);
+        const state = ConfigurationManager.getProjectState(projectFile);
+        const config = state.configuration ?? StatusBarController.activeConfiguration;
+        const framework = state.framework ?? StatusBarController.activeFramework;
+        return DotNetTaskProvider.getTask({ type: res.taskDefinitionId, target: DotNetTarget.Build, project: projectFile }, config, framework);
+    }
+    public static getRebuildTask(projectFile: string): vscode.Task {
+        const state = ConfigurationManager.getProjectState(projectFile);
+        const config = state.configuration ?? StatusBarController.activeConfiguration;
+        const framework = state.framework ?? StatusBarController.activeFramework;
+        return DotNetTaskProvider.getTask({ type: res.taskDefinitionId, target: DotNetTarget.Rebuild, project: projectFile, args: ['--no-incremental'] }, config, framework);
     }
     public static getRestoreTask(projectFile: string): vscode.Task {
         return DotNetTaskProvider.getTask({ type: res.taskDefinitionId, target: DotNetTarget.Restore, project: projectFile });
     }
     public static getCleanTask(projectFile: string): vscode.Task {
-        return DotNetTaskProvider.getTask({ type: res.taskDefinitionId, target: DotNetTarget.Clean, project: projectFile });
+        const state = ConfigurationManager.getProjectState(projectFile);
+        const config = state.configuration ?? StatusBarController.activeConfiguration;
+        const framework = state.framework ?? StatusBarController.activeFramework;
+        return DotNetTaskProvider.getTask({ type: res.taskDefinitionId, target: DotNetTarget.Clean, project: projectFile }, config, framework);
     }
 
     private static getTask(definition: vscode.TaskDefinition, configuration: string | undefined = undefined, framework: string | undefined = undefined): vscode.Task {

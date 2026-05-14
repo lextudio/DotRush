@@ -8,6 +8,8 @@ import { TestExplorerController } from './controllers/testExplorerController';
 import { ExternalTypeResolver } from './features/externalTypeResolver';
 import { ModulesView } from './features/modulesView';
 import { PerformanceView } from './features/performanceView';
+import { ConfigurationManager } from './features/configurationManager';
+import { SolutionExplorer } from './features/solutionExplorer';
 import { Interop } from './interop/interop';
 import { PublicExports } from './publicExports';
 import * as vscode from 'vscode';
@@ -21,6 +23,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		StatusBarController.activate(context);
 		ContextMenuController.activate(context);
 		TestExplorerController.activate(context);
+		SolutionExplorer.feature.activate(context);
+		ConfigurationManager.feature.activate(context);
 		LanguageServerController.activate(context);
 	}
 
